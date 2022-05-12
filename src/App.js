@@ -11,7 +11,7 @@ const intialState = [
     id: "create",
     label: "Create",
     mode: CREATE,
-    isChecked: true
+    isChecked: false
   },
   {
     id: "edit",
@@ -28,11 +28,13 @@ const intialState = [
 ];
 
 function reducer(state = intialState, event) {
+
   return state.map((control) => {
+
     if (control.id === event.target.name) {
       return {
         ...control,
-        isChecked: event.target.checked
+        isChecked: !control.isChecked
       };
     }
     return {
@@ -44,7 +46,7 @@ function reducer(state = intialState, event) {
 
 export default function App() {
   const center = [51.505, -0.09];
-  const zoom = 13;
+  const zoom = 2;
 
   const [state, dispatch] = useReducer(reducer, intialState);
   const [map, setMap] = useState(null);
@@ -59,14 +61,13 @@ export default function App() {
 
   const displayMap = useMemo(
     () => (
-      <Map center={center} zoom={zoom} setMap={setMap} freeDrawMode={mode} />
+      <Map center={center} zoom={zoom} setMap={setMap} freeDrawMode={mode}  />
     ),
     [center, mode]
   );
 
   return (
     <div className="App">
-      test
       {map ? <DisplayPosition map={map} center={center} zoom={zoom} /> : null}
       <CheckboxContainer checkboxes={state} onChange={dispatch} />
       {displayMap}

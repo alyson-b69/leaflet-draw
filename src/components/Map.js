@@ -2,8 +2,8 @@ import { MapContainer, TileLayer, ScaleControl } from "react-leaflet";
 import { useRef, useCallback, useMemo, useEffect } from "react";
 import Freedraw, { ALL } from "react-leaflet-freedraw";
 
-import LeafletControlGeocoder from "./LeafletControlGeocoder";
-import LeafletGeosearchControl from "./LeafletGeosearchControl";
+import LeafletControlGeocoder from "./Search/LeafletControlGeocoder";
+import LeafletGeosearchControl from "./Search/LeafletGeosearchControl";
 
 const Map = ({ center, zoom, setMap, freeDrawMode }) => {
   const freedrawRef = useRef(null);
@@ -55,6 +55,7 @@ const Map = ({ center, zoom, setMap, freeDrawMode }) => {
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        minZoom={2}
       />
 
       <LeafletControlGeocoder />
