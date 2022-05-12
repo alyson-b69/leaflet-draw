@@ -1,0 +1,38 @@
+{
+  "name": "leaflet-draw",
+  "version": "1.0.0",
+  "description": "drawing with leaflet-freeform on a map",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "axios": "0.21.1",
+    "axios-hooks": "2.6.3",
+    "leaflet": "1.7.1",
+    "leaflet-control-geocoder": "2.2.0",
+    "leaflet-geosearch": "3.3.2",
+    "prop-types": "15.7.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-leaflet": "3.2.0",
+    "react-leaflet-freedraw": "3.0.1",
+    "react-scripts": "4.0.0",
+    "styled-components": "5.3.5",
+    "turf": "3.0.14"
+  },
+  "devDependencies": {
+    "@babel/runtime": "7.13.8",
+    "typescript": "4.1.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
