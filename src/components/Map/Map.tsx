@@ -43,7 +43,7 @@ const Map: React.FC = () => {
                             return null;
                         }}
                     </MapConsumer>
-                    <MapDrawing drawingMode={drawingMode} />
+                    <MapDrawing drawingMode={drawingMode} selectedAreas={selectedAreas} />
                     <MapContent currentMode={currentMode} selectedAreas={selectedAreas} currentArea={currentArea} setSelectedAreas={setSelectedAreas}/>
                     <ZoomControl position="bottomright" />
                 </MapContainer>
