@@ -5,6 +5,7 @@ export const InputContainer = styled.div<{ width?: string; height?: string }>`
     position: relative;
     width: ${width};
     height: ${height};
+    z-index: 2;
   `}
 `;
 

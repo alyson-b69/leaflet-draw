@@ -53,6 +53,7 @@ const Dropdown: React.FC<DropdownProps> = ({ anchorRef, open, close, children })
       open={open}
       onClose={close}
       closeOnEscape
+
     >
       {children}
     </StyledDropdown>

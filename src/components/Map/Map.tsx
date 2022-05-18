@@ -1,37 +1,39 @@
-import React, { useState} from 'react';
-import {MapContainer, MapConsumer, TileLayer, ZoomControl} from "react-leaflet";
+import React, {useEffect, useState} from 'react';
+import { MapConsumer, TileLayer, ZoomControl} from "react-leaflet";
+import {FeatureGroup, Layer, Util} from "leaflet";
+import {MapContainer} from "react-leaflet";
+import { StyledMapContainer } from './Map.style';
+import { initialMapCenter, initialMapZoom} from "./constants";
 import SearchZone from "./SearchZone";
 import MapContent from "./MapContent";
-import MapDrawingControl from "./MapDrawingControl";
-import {DrawingState, DrawingStateEnum} from "./types";
-import { StyledMapContainer } from './Map.style';
 import MapDrawing from "./MapDrawing";
-import {initialDrawingModeState, initialMapCenter, initialMapZoom} from "./constants";
-import {findDrawingModeId, toggleDrawingMode} from "./services";
+
 
 const Map: React.FC = () => {
+   const mapUrl = `https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png`;
+   // const oldMapUrl = `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`
     const [zoom, setZoom] = React.useState(initialMapZoom);
     const [selectedAreas, setSelectedAreas] = useState<any[]>([]);
     const [currentArea, setCurrentArea] = useState<any>({});
-    const [drawingMode, setDrawingMode] = useState<DrawingState[]>(initialDrawingModeState)
-    const [currentMode, setCurrentMode] = useState<DrawingStateEnum | null>(findDrawingModeId(drawingMode))
+    const [drawAreas, setDrawAreas] = useState<FeatureGroup<any> | Layer[]>([])
+    useEffect(()=> {
+            // @ts-ignore
+        Util.isArray(drawAreas) && drawAreas.map((area) => {
+                console.log(area.getLatLngs())
+            })
 
-    React.useEffect(()=>{
-        setCurrentMode(drawingMode.find(mode => mode.isChecked)?.id || null)
-    }, [drawingMode])
+            console.log(drawAreas);
 
-    const onDrawingModeChange = (initialDrawingMode:DrawingState[], selectedMode: DrawingState) => {
-        setDrawingMode(toggleDrawingMode(initialDrawingMode, selectedMode));
-    }
 
+    }, [drawAreas])
     return (
         <div>
             <SearchZone setCurrentArea={setCurrentArea} setSelectedAreas={setSelectedAreas} selectedAreas={selectedAreas} />
-            <MapDrawingControl drawingModes={drawingMode} onDrawingModeChange={onDrawingModeChange} />
-            <StyledMapContainer mode={currentMode}>
+
+            <StyledMapContainer >
                 <MapContainer center={initialMapCenter} zoom={zoom} zoomControl={false} tap={false}>
                     <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        url={mapUrl}
                         minZoom={2}
                         maxZoom={18}
                     />
@@ -39,15 +41,17 @@ const Map: React.FC = () => {
                         {map => {
                             map.on('zoomend', event => {
                                 setZoom(map.getZoom());
-                            });
+                            })
                             return null;
                         }}
                     </MapConsumer>
-                    <MapDrawing drawingMode={drawingMode} selectedAreas={selectedAreas} />
-                    <MapContent currentMode={currentMode} selectedAreas={selectedAreas} currentArea={currentArea} setSelectedAreas={setSelectedAreas}/>
+                    <MapDrawing  setDrawAreas={setDrawAreas}  />
+                    <MapContent  selectedAreas={selectedAreas} currentArea={currentArea} setDrawAreas={setDrawAreas}/>
                     <ZoomControl position="bottomright" />
                 </MapContainer>
             </StyledMapContainer>
+            <br/>
+
         </div>
 
     );

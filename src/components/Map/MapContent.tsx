@@ -1,59 +1,36 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import {GeoJSON, useMap} from "react-leaflet";
 import {getBoundsFromBoundingBox} from "./services";
-import { DrawingStateEnum} from "./types";
 
 export interface MapContentProps {
     selectedAreas: any[];
     currentArea: any;
-    setSelectedAreas: Dispatch<SetStateAction<any[]>>
-    currentMode: DrawingStateEnum | null;
+    setDrawAreas: Dispatch<SetStateAction<any>>;
 }
 
-const MapContent: React.FC<MapContentProps> = ({selectedAreas, currentArea, setSelectedAreas, currentMode}) => {
+const MapContent: React.FC<MapContentProps> = ({selectedAreas, currentArea, setDrawAreas}) => {
     const [renderPlaces, setRenderPlaces] = useState(<></>);
     const map = useMap();
 
     React.useEffect(()=> {
-        if(currentMode === DrawingStateEnum.delete){
-            setRenderPlaces(<div className={'toDelete'}>{
-                selectedAreas.map(area => {
-                    return (
-                        <GeoJSON
-                            key={area.geojson}
-                            data={area.geojson}
-                            style={{color: 'orange'}}
-                            onEachFeature={(f, l)=> {
-                                l.on({
-                                    click: (l) => {
-                                        setSelectedAreas(selectedAreas.filter((areaItem => {
-                                            return areaItem.display_name !== area.display_name
-                                        })))
-                                    },
-                                })
-                            }}
-                        />
-                    )
-                })
-            }</div>)
-        } else {
             setRenderPlaces(<>{
-                selectedAreas.map(place => {
+                selectedAreas.map((place, index) => {
                     return (
                         <GeoJSON
-                            key={place.geojson}
+                            key={place.geojson + index}
                             data={place.geojson}
                         />
                     )
                 })
             }</>)
-        }
 
-    }, [selectedAreas, currentMode])
+    }, [selectedAreas])
+
+
 
     React.useEffect(()=> {
-       return;
-    }, [renderPlaces, currentMode])
+        setDrawAreas(map.pm.getGeomanLayers());
+    }, [renderPlaces])
 
 
     useEffect(()=> {

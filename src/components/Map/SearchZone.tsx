@@ -22,6 +22,7 @@ const SearchZone: React.FC<SearchZoneProps> = ({setCurrentArea, setSelectedAreas
             format: 'json',
             limit: 20,
             polygon_geojson: 1,
+            polygon_threshold: 0.05
         }
 
         axios.get('https://nominatim.openstreetmap.org/search', {

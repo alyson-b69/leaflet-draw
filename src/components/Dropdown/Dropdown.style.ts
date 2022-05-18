@@ -12,6 +12,7 @@ export const StyledDropdown = styled(Popup)<{
       width: ${width ? `${width}px` : 'max-content'};
       left: ${left ? `${left}px` : '0'};
       margin-left: ${left ? `0px !important` : 'auto'};
+
       ${onTop
         ? css`
             top: ${top ? `calc(${top}px - 100% + 8px)` : '0'};
